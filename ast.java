@@ -1,3 +1,4 @@
+import java.awt.Window.Type;
 import java.io.*;
 import java.util.*;
 
@@ -174,6 +175,10 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.println("{");
+        myDeclList.unparse(p, indent+4);
+        // myStmtList.unparse(p, indent+4);
+        p.println("}");
     }
 
     // two children
@@ -247,6 +252,15 @@ class FnDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myType.unparse(p, 0);
+        p.print(" ");
+        myId.unparse(p, 0);
+        p.print("(");
+        // myFormalsList.unparse(p, 0);
+        p.print(")");
+        // p.println(" {");
+        myBody.unparse(p, indent);
+        // p.println("}");
     }
 
     // four children

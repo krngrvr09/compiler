@@ -78,6 +78,7 @@ non terminal ProgramNode      program;
 non terminal LinkedList       declList;
 non terminal DeclListNode     dList;
 non terminal DeclNode         decl;
+non terminal FnDeclNode       fnDecl;
 non terminal VarDeclNode      varDecl;
 non terminal StructDeclNode   structDecl;
 non terminal TypeNode         type;
@@ -120,6 +121,9 @@ decl            ::= varDecl:v
                 | structDecl:s
                 {: RESULT = s;
                 :}
+                | fnDecl:f
+                {: RESULT = f;
+                :}
                 ;
 
 varDecl         ::= type:t id:i SEMICOLON
@@ -160,7 +164,11 @@ structDecl      ::= STRUCT id:i LCURLY declList:d RCURLY SEMICOLON
                 :}
                 ;
 
-
+// fnDecl          ::= type:t id:i LPAREN formals:f RPAREN LCURLY declList:d stmtList:s RCURLY
+fnDecl          ::= type:t id:i LPAREN RPAREN LCURLY declList:d RCURLY
+                {: RESULT = new FnDeclNode(t, i, new FormalsListNode(new ArrayList<FormalDeclNode>()), new FnBodyNode(new DeclListNode(d), new StmtListNode(new ArrayList<StmtNode>())));
+                :}
+                ;
 id              ::= ID:i
                 {: RESULT = new IdNode(i.linenum, i.charnum, i.idVal);
                 :}
